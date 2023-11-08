@@ -7,9 +7,9 @@ public class HealthManager : MonoBehaviour
 {
 
     public PlayerController player;
-    private int health;
+    public int health;
 
-    [SerializeField] private Image[] healthImage;
+    //[SerializeField] private Image[] healthImage;
     [SerializeField] private GameObject healthFull;
     [SerializeField] private GameObject health1Third;
     [SerializeField] private GameObject health2Third;
@@ -17,11 +17,10 @@ public class HealthManager : MonoBehaviour
 
     private void Start()
     {
-        player = GetComponent<PlayerController>();
-        healthFull = GameObject.Find("Canvas/Health Bar/HealthFull");
-        health1Third = GameObject.Find("Canvas/Health Bar/Health1Third");
-        health2Third = GameObject.Find("Canvas/Health Bar/Health2Thirds");
-        healthEmpty = GameObject.Find("Canvas/Health Bar/HealthEmpty");
+        healthFull = GameObject.Find("UI/Health Bar/HealthFull");
+        health1Third = GameObject.Find("UI/Health Bar/Health1Third");
+        health2Third = GameObject.Find("UI/Health Bar/Health2Thirds");
+        healthEmpty = GameObject.Find("UI/Health Bar/HealthEmpty");
         health = player.numberOfLives;
 
     }
@@ -31,7 +30,19 @@ public class HealthManager : MonoBehaviour
         ControlHealth();
 
     }
+    private void Awake()
+    {
+        player = GetComponent<PlayerController>();
 
+    }
+
+    public void Heal()
+    {
+        if (health < player.numberOfLives)
+        {
+            health++;
+        }
+    }
 
     public void ControlHealth()
     {
@@ -39,6 +50,9 @@ public class HealthManager : MonoBehaviour
         if (health == 3)
         {
             healthFull.SetActive(true);
+            health2Third.SetActive(false);
+            health1Third.SetActive(false);
+            healthEmpty.SetActive(false);
         }
         else if (health == 2)
         {
@@ -65,6 +79,7 @@ public class HealthManager : MonoBehaviour
         {
             Debug.Log("Game Over");
             //teleport to end screen
+            
             TeleportToEndGameScreen();
 
         }
@@ -72,20 +87,21 @@ public class HealthManager : MonoBehaviour
 
     public void TeleportToEndGameScreen()
     {
-        SceneManager.LoadSceneAsync("GameOverScene");
+        SceneManager.LoadSceneAsync("Game Over");
     }
 
+    [ContextMenu("TakeDamage")]
     public void TakeDamage()
     {
         health -= 1;
-        player.TeleportToWorldSpawn();
-    }
-
-    public void OnTriggerEnter(Collider other)
-    {
-        if (other.tag == ("Death Barrier"))
+        
+        if (player.currentSafeSpot)
         {
-            TakeDamage();
+            player.TeleportToSafeSpot();
+        }
+        else
+        {
+            player.TeleportToWorldSpawn();
         }
     }
 

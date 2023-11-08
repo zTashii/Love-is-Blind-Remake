@@ -1,0 +1,28 @@
+using System.Collections;
+using System.Collections.Generic;
+using UnityEngine;
+
+public class StickToPlatform : MonoBehaviour
+{
+ 
+    private void OnTriggerEnter2D(Collider2D collision)
+    {
+        if (collision.gameObject.name == "Player")
+        {
+            collision.gameObject.transform.SetParent(transform);
+            Rigidbody2D playerRb = collision.gameObject.GetComponent<Rigidbody2D>();
+            playerRb.interpolation = RigidbodyInterpolation2D.None;
+        }
+    }
+
+    private void OnTriggerExit2D(Collider2D collision)
+    {
+        if (collision.gameObject.name == "Player")
+        {
+            collision.gameObject.transform.SetParent(null);
+            DontDestroyOnLoad(collision.gameObject);
+            Rigidbody2D playerRb = collision.gameObject.GetComponent<Rigidbody2D>();
+            playerRb.interpolation = RigidbodyInterpolation2D.Interpolate;
+        }
+    }
+}

@@ -5,6 +5,10 @@ TagManager:
   serializedVersion: 2
   tags:
   - World Spawn
+  - FlashPickup
+  - Goal
+  - Death Barrier
+  - Safe Spot
   layers:
   - Default
   - TransparentFX
@@ -13,7 +17,7 @@ TagManager:
   - Water
   - UI
   - Ground
-  - 
+  - Player
   - 
   - 
   - 
@@ -41,4 +45,13 @@ TagManager:
   m_SortingLayers:
   - name: Default
     uniqueID: 0
+    locked: 0
+  - name: Foreground
+    uniqueID: 3800572487
+    locked: 0
+  - name: Player
+    uniqueID: 3960614951
+    locked: 0
+  - name: Background
+    uniqueID: 505609579
     locked: 0
